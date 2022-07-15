@@ -21,6 +21,8 @@
 *.rar
 *.db
 
+.classpath
+.project
 camunda-h2-database.trace.db
 camunda-h2-database.mv.db
 
