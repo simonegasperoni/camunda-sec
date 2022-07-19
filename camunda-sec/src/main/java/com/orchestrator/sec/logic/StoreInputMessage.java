@@ -18,16 +18,20 @@ public class StoreInputMessage implements JavaDelegate {
 		String postgresJdbc = execution.getVariable("postgresJdbc").toString();
 		String postgresUsr = execution.getVariable("postgresUsr").toString();
 		String postgresPwd = execution.getVariable("postgresPwd").toString();
-		
+
 		//write record
-		if(msg.equals("Startup")) {
+		if(msg.equals("Abort")) {
 			SagalogAccess.writeRecord(postgresJdbc, postgresUsr, postgresPwd, trace_id, msg, compensation, activity_id, group, "Waiting");
-			SagalogAccess.writeRecord(postgresJdbc, postgresUsr, postgresPwd, trace_id, msg, compensation, activity_id, group, "Success");
 		}
 		else {
-			SagalogAccess.writeRecord(postgresJdbc, postgresUsr, postgresPwd, trace_id, msg, compensation, activity_id, group, result);
+			if(msg.equals("Startup")) {
+				SagalogAccess.writeRecord(postgresJdbc, postgresUsr, postgresPwd, trace_id, msg, compensation, activity_id, group, "Waiting");
+				SagalogAccess.writeRecord(postgresJdbc, postgresUsr, postgresPwd, trace_id, msg, compensation, activity_id, group, "Success");
+			}
+			else {
+				SagalogAccess.writeRecord(postgresJdbc, postgresUsr, postgresPwd, trace_id, msg, compensation, activity_id, group, result);
+			}
 		}
-		
 		//set abort
 		boolean abort=new Boolean(false);
 		execution.setVariable("abort", abort);
@@ -35,10 +39,10 @@ public class StoreInputMessage implements JavaDelegate {
 			abort=new Boolean(true);
 		}
 		execution.setVariable("abort", abort);
-		
+
 		//logs
 		LOGGER.info("["+trace_id+"]["+activity_id+"] msg: "+msg+", compensation: "+compensation+", +abort: "+abort+", result: "+result+", group: "+group);
 
-		
+
 	}
 }

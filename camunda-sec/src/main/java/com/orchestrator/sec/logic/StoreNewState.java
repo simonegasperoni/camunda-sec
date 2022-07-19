@@ -56,7 +56,7 @@ public class StoreNewState  implements JavaDelegate {
 					channel.queueDeclare(m+"Begin", false, false, false, null);
 					String body=trace_id+" "+newActivityID+" "+compensation+" "+group+" start";
 					channel.basicPublish("", m+"Begin", null, body.getBytes(StandardCharsets.UTF_8));
-					LOGGER.info("["+trace_id+"] SENDING MESSAGE via Rabitmq (message broker: "+rabbitmqOutput+"): "+body);
+					LOGGER.info("["+trace_id+"] SENDING MESSAGE on "+m+"Begin via Rabitmq (message broker: "+rabbitmqOutput+"): "+body);
 				}
 			}
 		}

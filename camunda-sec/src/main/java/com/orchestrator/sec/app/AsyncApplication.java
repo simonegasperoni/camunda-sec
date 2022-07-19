@@ -77,7 +77,13 @@ public class AsyncApplication {
 			String[] corp = corpus.split(" ");
 			String queueName = delivery.getEnvelope().getRoutingKey();
 
-			mapVars.put("msg", queueName.substring(0, queueName.length() - 3));
+			if(queueName.equals("Abort")) {
+				mapVars.put("msg", queueName);
+			}
+			else {
+				mapVars.put("msg", queueName.substring(0, queueName.length() - 3));
+			}
+			
 			mapVars.put("trace",corp[0]);
 			mapVars.put("activity",corp[1]);
 			mapVars.put("compensation",corp[2]);
@@ -97,6 +103,9 @@ public class AsyncApplication {
 		};
 
 		//Queues declaration
+		channel.queueDeclare("Abort", false, false, false, null);
+		channel.basicConsume("Abort", true, deliverCallback, consumerTag -> { });
+		LOGGER.info("new queue: Abort");
 		List<String> queues=detectListOfQueuesByDmn();
 		for(String queue:queues) {
 			channel.queueDeclare(queue, false, false, false, null);
