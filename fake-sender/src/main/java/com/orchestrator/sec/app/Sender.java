@@ -7,7 +7,7 @@ import java.nio.charset.StandardCharsets;
 
 public class Sender {
 
-    private final static String QUEUE_NAME = "LockEnd";
+    private final static String QUEUE_NAME = "SemanticValidationEnd";
 
     public static void main(String[] argv) throws Exception {
         ConnectionFactory factory = new ConnectionFactory();
@@ -16,7 +16,7 @@ public class Sender {
              Channel channel = connection.createChannel()) {
             channel.queueDeclare(QUEUE_NAME, false, false, false, null);
             //<msg, trace_id, activity_id, params>
-            String message = "123 452b478b-10dd-4586-8d81-fee913e2bd6b false Lock Success";
+            String message = "123 90b8658a-1a5f-4caa-ae62-52683ef4c6cc false SemanticValidation Success";
             channel.basicPublish("", QUEUE_NAME, null, message.getBytes(StandardCharsets.UTF_8));
             System.out.println(" [x] Sent '" + message + "'");
         }
