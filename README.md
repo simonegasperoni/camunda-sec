@@ -9,7 +9,7 @@ The microservice architectures consist of applications that scale independently 
 
 The executions of local transactions in each application can be combined with the execution of other local transactions by other applications to provide the clients with specific business results. 
 The purpose of the Saga Execution Controller (SEC) is just to orchestrate all the local transactions of the distributed architecture (https://microservices.io/patterns/data/saga.html). 
-The combination of the local transactions (business activities) is called Saga Transaction (ST).
+The combination of the local transactions (business activities) is called here Saga Transaction (ST).
 The following SEC proposal is in line with the principles of the microservices architectural pattern already listed on the top.
 The most important highlights of this SEC proposal are:
 
@@ -48,20 +48,23 @@ Although the BPMN2 model is self-explanatory, below there is a brief description
 
  1. **Store input message in the Sagalog**: As soon as a message has been received in an instance of the SEC, it must be saved in the Sagalog with the relative result (the Sagalog is a sort of history database of all the relevant events).
  2. **Retrieve the state in the Sagalog**: After writing the input message in the Sagalog, the current state of the ST must be detected. The purpose of this operation is to understand whether all the messages of the group have been received and, in case, the SEC must trigger the next group of messages to send. The sequence of groups is defined in the Saga Diagram. If all the messages of the group are "Success" the state of the Sagalog for the current group is "Success", if at least one of them is "Fail" the state of the current group is "Fail". If an abort has been sent the state must be set to "Abort" as soon as all the messages of the current group have been received.
- 3.  **Check consistency in the Sagalog**: Here some checks can be performed to assess the consistency of the Sagalog's records for the current ST. In case the received message introduces some kind of inconsistency an error/exception must be thrown. It requires some kind of custom implementation.
+ 3. **Check consistency in the Sagalog**: Here some checks can be performed to assess the consistency of the Sagalog's records for the current ST. In case the received message introduces some kind of inconsistency an error/exception must be thrown. It requires some kind of custom implementation.
  4. **Saga Diagram**: This is a DMN table with the following structure *<input: group, input: saga state, output: new group>*. The values for *saga state* must be one of the following values: *Success*, *Fail*, and *Abort*. The current state for the group is detected by the operations already described at point 2. By this table, the new group of messages is detected.
  5. **Messages Detection**: This is a DMN table with the following structure *<input: group, output: messages>*. The input is the name of the new group just detected in the Saga Diagram, and the output is the list of messages to send to trigger the new local transactions. 
  6. **Store new state in the Sagalog**: Here SEC stores the new state in the Sagalog and sends the messages of the new group of activities through the *Begin* queues. In the Sagalog the messages just sent are stored with the result value set to "Waiting".
 
+Each instance of the SEC is able to handle input messages independently from the other instances. Further requests related to the same Saga transaction can be processed by other instances of the SEC, since they are completely stateless and scalable.
+
 ### Abort handling
-If an Abort has been sent for some current ST, it will be saved with the "result" field set to "Waiting". When the group is completed and all the messages have been received the compensation chain will be triggered and the SEC turns the "result" field into "Processed"  
+If an Abort has been received for some running ST, it will be saved with the "result" field set to "Waiting". When the group is completed (all the messages have been received) the compensation chain will be triggered and the SEC turns the "result" field into "Processed".
 
 ## Storage layer
 Basically, the messages that arrive at SEC are stored in the Sagalog table along with a time stamp and the name of the input queue.
 
 ## Technological stack
+
 ### Communication layer: RabbitMQ
-In this SEC proposal, the message broker is RabbitMQ. RabbitMQ is easy to deploy on-premises and in the cloud. It supports multiple messaging protocols. RabbitMQ can be deployed in distributed and federated configurations to meet high-scale, high-availability requirements.
+In this SEC proposal, the message broker is RabbitMQ. RabbitMQ is easy to deploy and supports multiple messaging protocols. It is scalable and high-availabilable.
 ### Business layer: Camunda
 The model of the SEC is executed in the Camunda workflow engine. In this way, all the logic implemented by the SEC is declaratively defined as well as the Saga diagram. It facilitates the maintainability of the software.
 ### Storage layer: Postgres
@@ -80,10 +83,11 @@ In this SEC proposal the Sagalog is stored in postgres in the following table:
     );
 
 ### Artifacts and configuration files 
+
 ##### application.yaml
 Here there are the Camunda's properties.
 ##### application.properties
-Here there are the rest of the properties.
+Here there is the rest of the properties.
 ##### saga_diagram.dmn
 This is the DMN table of the Saga Diagram.
 ##### groups.dmn

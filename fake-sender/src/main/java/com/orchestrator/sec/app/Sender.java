@@ -7,7 +7,7 @@ import java.nio.charset.StandardCharsets;
 
 public class Sender {
 
-    private final static String QUEUE_NAME = "SnapshotSPARQLEnd";
+    private final static String QUEUE_NAME = "StartupEnd";
 
     public static void main(String[] argv) throws Exception {
         ConnectionFactory factory = new ConnectionFactory();
@@ -16,7 +16,7 @@ public class Sender {
              Channel channel = connection.createChannel()) {
             channel.queueDeclare(QUEUE_NAME, false, false, false, null);
             //<msg, trace_id, activity_id, params>
-            String message = "123 a09ab758-001e-4bec-8ff7-f69090d1258d false OtherSnapshots Success";
+            String message = "a09ab758-001e-4bec-8ff7-f69090d11234 a09ab758-001e-4bec-8ff7-f69090d1258d false Startup Success";
             channel.basicPublish("", QUEUE_NAME, null, message.getBytes(StandardCharsets.UTF_8));
             System.out.println(" [x] Sent '" + message + "'");
         }
