@@ -24,7 +24,7 @@ public class StoreInputMessage implements JavaDelegate {
 			SagalogAccess.writeRecord(postgresJdbc, postgresUsr, postgresPwd, trace_id, msg, compensation, activity_id, group, "Waiting");
 		}
 		else {
-			if(msg.equals("Startup")) {
+			if(msg.equals("InitializerService/Saga/SEC-Ingestion/Startup")) {
 				SagalogAccess.writeRecord(postgresJdbc, postgresUsr, postgresPwd, trace_id, msg, compensation, activity_id, group, "Waiting");
 				SagalogAccess.writeRecord(postgresJdbc, postgresUsr, postgresPwd, trace_id, msg, compensation, activity_id, group, "Success");
 			}

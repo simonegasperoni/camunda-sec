@@ -1,3 +1,4 @@
+
 # Saga execution controller
 ## Context
 The microservice architectures consist of applications that scale independently of each other. The applications must be (https://microservices.io/patterns/microservices.html):
@@ -22,8 +23,8 @@ The most important highlights of this SEC proposal are:
 ## Communication layer
 The communication between business microservices and the SEC is based on an exchange of messages. Messages in the input of the SEC must be processed to establish what is the next action to trigger. The SEC triggers the business activities via messages too. The messages are exchanged through a message broker (in this proposal the message broker is RabbitMQ).
 Each kind of local transaction performed by a business microservice needs two queues, one for triggering the start of the business activity and one to send the result to the SEC. For example, if the business activity is `BusinessDataValidation` the queues used by the SEC are:
- 1. `BusinessDataValidationBegin` is used to notify that the business service must start the local transaction `BusinessDataValidation`.
- 2. `BusinessDataValidationEnd` is used to notify the SEC that the local transaction is completed.
+ 1. `BusinessDataValidationRequestChannel` is used to notify that the business service must start the local transaction `BusinessDataValidation`.
+ 2. `BusinessDataValidationResponseChannel` is used to notify the SEC that the local transaction is completed.
 The business microservice must use these queues accordingly.
 The structure of the exchanged messages is the following:
 
@@ -51,7 +52,7 @@ Although the BPMN2 model is self-explanatory, below there is a brief description
  3. **Check consistency in the Sagalog**: Here some checks can be performed to assess the consistency of the Sagalog's records for the current ST. In case the received message introduces some kind of inconsistency an error/exception must be thrown. It requires some kind of custom implementation.
  4. **Saga Diagram**: This is a DMN table with the following structure *<input: group, input: saga state, output: new group>*. The values for *saga state* must be one of the following values: *Success*, *Fail*, and *Abort*. The current state for the group is detected by the operations already described at point 2. By this table, the new group of messages is detected. The Saga Diagram is responsible for detecting the next action to perform, it represent the sequence of groups of messages to send.
  5. **Messages Detection**: This is a DMN table with the following structure *<input: group, output: messages>*. The input is the name of the new group just detected in the Saga Diagram, and the output is the list of names of messages to send to trigger the new local transactions. 
- 6. **Store new state in the Sagalog**: Here the SEC stores the new state in the Sagalog and sends the messages of the new group of activities through the *Begin* queues. In the Sagalog the messages just sent are stored with the result value set to "Waiting".
+ 6. **Store new state in the Sagalog**: Here the SEC stores the new state in the Sagalog and sends the messages of the new group of activities through the *RequestChannel* queues. In the Sagalog the messages just sent are stored with the result value set to "Waiting".
 
 Each instance of the SEC is able to handle input messages independently from the other instances. Further requests related to the same Saga transaction can be processed by other instances of the SEC, since the SEC is completely stateless and scalable.
 

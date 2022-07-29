@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/" xmlns:dmndi="https://www.omg.org/spec/DMN/20191111/DMNDI/" xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" xmlns:camunda="http://camunda.org/schema/1.0/dmn" id="Definitions_146zb3k" name="DRD" namespace="http://camunda.org/schema/1.0/dmn" exporter="Camunda Modeler" exporterVersion="4.9.0">
+<definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/" xmlns:dmndi="https://www.omg.org/spec/DMN/20191111/DMNDI/" xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" xmlns:camunda="http://camunda.org/schema/1.0/dmn" xmlns:biodi="http://bpmn.io/schema/dmn/biodi/2.0" id="Definitions_146zb3k" name="DRD" namespace="http://camunda.org/schema/1.0/dmn" exporter="Camunda Modeler" exporterVersion="4.9.0">
   <decision id="Decision_05nbszg" name="Decision 1">
     <decisionTable id="DecisionTable_1qd26re" hitPolicy="COLLECT">
-      <input id="Input_1" label="group" camunda:inputVariable="group">
+      <input id="Input_1" label="group" biodi:width="242" camunda:inputVariable="group">
         <inputExpression id="InputExpression_1" typeRef="string">
           <text></text>
         </inputExpression>
       </input>
-      <output id="Output_1" label="messages" name="messages" typeRef="string" />
+      <output id="Output_1" label="queues" name="queues" typeRef="string" biodi:width="587" />
       <rule id="DecisionRule_0zx3tdq">
         <inputEntry id="UnaryTests_1fwsy7o">
           <text>"Startup"</text>
         </inputEntry>
         <outputEntry id="LiteralExpression_1uwqdg1">
-          <text>"Startup"</text>
+          <text>"InitializerService/Saga/SEC-Ingestion/Startup"</text>
         </outputEntry>
       </rule>
       <rule id="DecisionRule_0ar4z7j">
@@ -21,7 +21,7 @@
           <text>"StructuralValidation"</text>
         </inputEntry>
         <outputEntry id="LiteralExpression_1p1axvj">
-          <text>"StructuralValidation"</text>
+          <text>"ValidationService/Saga/SEC-Ingestion/StructuralValidation"</text>
         </outputEntry>
       </rule>
       <rule id="DecisionRule_06s0fl0">
@@ -29,7 +29,7 @@
           <text>"Lock"</text>
         </inputEntry>
         <outputEntry id="LiteralExpression_0k9hb41">
-          <text>"Lock"</text>
+          <text>"LockingService/Saga/SEC-Ingestion/Lock"</text>
         </outputEntry>
       </rule>
       <rule id="DecisionRule_0q6gh65">
@@ -37,7 +37,7 @@
           <text>"SnapshotValidation"</text>
         </inputEntry>
         <outputEntry id="LiteralExpression_0gnp9tj">
-          <text>"SnapshotValidation"</text>
+          <text>"ValidationService/Saga/SEC-Ingestion/SnapshotValidation"</text>
         </outputEntry>
       </rule>
       <rule id="DecisionRule_0wq1oln">
@@ -45,15 +45,7 @@
           <text>"SemanticValidation"</text>
         </inputEntry>
         <outputEntry id="LiteralExpression_1sumwb7">
-          <text>"SemanticValidation"</text>
-        </outputEntry>
-      </rule>
-      <rule id="DecisionRule_0la2ij0">
-        <inputEntry id="UnaryTests_0lpwwqo">
-          <text>"OtherSnapshots"</text>
-        </inputEntry>
-        <outputEntry id="LiteralExpression_0sd33pc">
-          <text>"SnapshotIndexation"</text>
+          <text>"ValidationService/Saga/SEC-Ingestion/SemanticValidation"</text>
         </outputEntry>
       </rule>
       <rule id="DecisionRule_0mgyid6">
@@ -61,7 +53,231 @@
           <text>"OtherSnapshots"</text>
         </inputEntry>
         <outputEntry id="LiteralExpression_15n4d77">
-          <text>"SnapshotSPARQL"</text>
+          <text>"SPARQLService/Saga/SEC-Ingestion/SnapshotSPARQL"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_0la2ij0">
+        <inputEntry id="UnaryTests_0lpwwqo">
+          <text>"OtherSnapshots"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0sd33pc">
+          <text>"IndexationService/Saga/SEC-Ingestion/SnapshotIndexationPreingestion"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_0gp8j2w">
+        <inputEntry id="UnaryTests_1yfqjq1">
+          <text>"Backups"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1l8wsr8">
+          <text>"SPARQLService/Saga/SEC-Ingestion/Backup"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_1or1jja">
+        <inputEntry id="UnaryTests_1l3zs9w">
+          <text>"Backups"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_07f1gwq">
+          <text>"ContentService/Saga/SEC-Ingestion/Backup"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_13en9zj">
+        <inputEntry id="UnaryTests_0d3lvrq">
+          <text>"Backups"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1cwr2l8">
+          <text>"RDFService/Saga/SEC-Ingestion/Backup"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_04m8o0g">
+        <inputEntry id="UnaryTests_1nf7xzf">
+          <text>"Backups"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0cx59ri">
+          <text>"APIGateway/Saga/SEC-Ingestion/Backup"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_1vbkdao">
+        <inputEntry id="UnaryTests_17iqiuf">
+          <text>"Artifacts"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_02qu9wp">
+          <text>"ArtifactService/Saga/SEC-Ingestion/Artifacts"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_1a5wg4t">
+        <inputEntry id="UnaryTests_0c9opsx">
+          <text>"Ingestion"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1gwl4qu">
+          <text>"ArtifactService/Saga/SEC-Ingestion/Ingestion"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_0fetqai">
+        <inputEntry id="UnaryTests_0idcgsc">
+          <text>"Ingestion"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0pvjkr7">
+          <text>"SPARQLService/Saga/SEC-Ingestion/Ingestion"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_02npvvr">
+        <inputEntry id="UnaryTests_1v5vmzh">
+          <text>"Ingestion"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_08r6e84">
+          <text>"ContentService/Saga/SEC-Ingestion/Ingestion"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_0ppxdak">
+        <inputEntry id="UnaryTests_1477vau">
+          <text>"Ingestion"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1p62ptk">
+          <text>"RDFService/Saga/SEC-Ingestion/Ingestion"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_0t9y0ob">
+        <inputEntry id="UnaryTests_0cad3lz">
+          <text>"Ingestion"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0zs8h78">
+          <text>"APIGateway/Saga/SEC-Ingestion/Ingestion"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_1a5z4u9">
+        <inputEntry id="UnaryTests_0tec0nk">
+          <text>"SnapshotIndexationPostingestion"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_14f88wm">
+          <text>"IndexationService/Saga/SEC-Ingestion/SnapshotIndexationPostingestion"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_13c2ht6">
+        <inputEntry id="UnaryTests_0yp3ilp">
+          <text>"Indexation"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0zw7rgr">
+          <text>"IndexationService/Saga/SEC-Ingestion/Indexation"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_1ftpvki">
+        <inputEntry id="UnaryTests_0iy19yn">
+          <text>"Rollbacks"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0mpvik9">
+          <text>"APIGateway/Saga/SEC-Ingestion/Rollback"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_0n467ol">
+        <inputEntry id="UnaryTests_1izdsww">
+          <text>"Rollbacks"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1cm9jkr">
+          <text>"RDFService/Saga/SEC-Ingestion/Rollback"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_186n61l">
+        <inputEntry id="UnaryTests_1q9t5oo">
+          <text>"Rollbacks"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1biqfzi">
+          <text>"IndexationService/Saga/SEC-Ingestion/Rollback"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_0ugk6mq">
+        <inputEntry id="UnaryTests_1q4777o">
+          <text>"Rollbacks"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_04t4uex">
+          <text>"ContentService/Saga/SEC-Ingestion/Rollback"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_00gkvxc">
+        <inputEntry id="UnaryTests_1per2sm">
+          <text>"Rollbacks"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0rq3mf1">
+          <text>"SPARQLService/Saga/SEC-Ingestion/Rollback"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_0eai55g">
+        <inputEntry id="UnaryTests_0ryfac1">
+          <text>"Rollbacks"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1c40jyk">
+          <text>"ArtifactService/Saga/SEC-Ingestion/Rollback"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_1nz0g0y">
+        <inputEntry id="UnaryTests_1suprhv">
+          <text>"Cleanups"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0531l1m">
+          <text>"ArtifactService/Saga/SEC-Ingestion/Cleanup"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_1araz8s">
+        <inputEntry id="UnaryTests_1stk03l">
+          <text>"Cleanups"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0urx6fu">
+          <text>"APIGateway/Saga/SEC-Ingestion/Cleanup"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_0dtprv5">
+        <inputEntry id="UnaryTests_0v6vfic">
+          <text>"Cleanups"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1uh3pn6">
+          <text>"RDFService/Saga/SEC-Ingestion/Cleanup"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_0vw7whc">
+        <inputEntry id="UnaryTests_1xd4bk6">
+          <text>"Cleanups"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_00ugziy">
+          <text>"ContentService/Saga/SEC-Ingestion/Cleanup"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_1vrafdi">
+        <inputEntry id="UnaryTests_1lvj6ib">
+          <text>"Cleanups"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0upkj14">
+          <text>"SPARQLService/Saga/SEC-Ingestion/Cleanup"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_0qayxu5">
+        <inputEntry id="UnaryTests_0lwhhci">
+          <text>"Cleanups"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0xdem8t">
+          <text>"IndexationService/Saga/SEC-Ingestion/Cleanup"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_05rrzet">
+        <inputEntry id="UnaryTests_1ckq8gz">
+          <text>"Cleanups"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0hkzm63">
+          <text>"ValidationService/Saga/SEC-Ingestion/Cleanup"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_11ha09p">
+        <inputEntry id="UnaryTests_0x3ob43">
+          <text>"Unlock"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1wttqrx">
+          <text>"LockingService/Saga/SEC-Ingestion/Unlock"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_1krvg4p">
+        <inputEntry id="UnaryTests_126kmjd">
+          <text>"CleanupLockingService"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1dyvdek">
+          <text>"LockingService/Saga/SEC-Ingestion/Cleanup"</text>
         </outputEntry>
       </rule>
       <rule id="DecisionRule_0y7jsaq">
@@ -69,23 +285,7 @@
           <text>"CreateResponse"</text>
         </inputEntry>
         <outputEntry id="LiteralExpression_0js7stm">
-          <text>"CreateResponse"</text>
-        </outputEntry>
-      </rule>
-      <rule id="DecisionRule_0us7emy">
-        <inputEntry id="UnaryTests_0ogqdyh">
-          <text>"FakeCompensation"</text>
-        </inputEntry>
-        <outputEntry id="LiteralExpression_110w3bt">
-          <text>"FakeCompensation1"</text>
-        </outputEntry>
-      </rule>
-      <rule id="DecisionRule_0l1bopc">
-        <inputEntry id="UnaryTests_1gvz5y2">
-          <text>"FakeCompensation"</text>
-        </inputEntry>
-        <outputEntry id="LiteralExpression_0cfqff9">
-          <text>"FakeCompensation2"</text>
+          <text>"InitializerService/Saga/SEC-Ingestion/CreateResponse"</text>
         </outputEntry>
       </rule>
     </decisionTable>

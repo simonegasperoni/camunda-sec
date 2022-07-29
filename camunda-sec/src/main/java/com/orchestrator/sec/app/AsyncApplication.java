@@ -48,7 +48,7 @@ public class AsyncApplication {
 		NodeList nl = (NodeList) xPath.compile(expression).evaluate(xmlDocument, XPathConstants.NODESET);
 		for(int i=0; i<nl.getLength(); i++) {
 			Element elem = (Element)nl.item(i);
-			String newQueue = elem.getTextContent().replace("\"", "")+"End";
+			String newQueue = elem.getTextContent().replace("\"", "");
 			result.add(newQueue);
 		}
 		return result;
@@ -77,11 +77,11 @@ public class AsyncApplication {
 			String[] corp = corpus.split(" ");
 			String queueName = delivery.getEnvelope().getRoutingKey();
 
-			if(queueName.equals("Abort")) {
-				mapVars.put("msg", queueName);
+			if(queueName.equals("SEC-Ingestion/Task/AbortResponseChannel")) {
+				mapVars.put("msg", "Abort");
 			}
 			else {
-				mapVars.put("msg", queueName.substring(0, queueName.length() - 3));
+				mapVars.put("msg", queueName.replace("ResponseChannel",""));
 			}
 			
 			mapVars.put("trace",corp[0]);
@@ -108,9 +108,11 @@ public class AsyncApplication {
 		LOGGER.info("new queue: Abort");
 		List<String> queues=detectListOfQueuesByDmn();
 		for(String queue:queues) {
-			channel.queueDeclare(queue, false, false, false, null);
-			channel.basicConsume(queue, true, deliverCallback, consumerTag -> { });
-			LOGGER.info("new queue: "+queue);
+			channel.queueDeclare(queue+"RequestChannel", false, false, false, null);
+			channel.queueDeclare(queue+"ResponseChannel", false, false, false, null);
+			channel.basicConsume(queue+"ResponseChannel", true, deliverCallback, consumerTag -> { });
+			LOGGER.info("new queue: "+queue+"RequestChannel");
+			LOGGER.info("new queue: "+queue+"ResponseChannel");			
 
 		}
 		LOGGER.info("The orchestrator is now ready and it is waiting for messages from the already listed queues");

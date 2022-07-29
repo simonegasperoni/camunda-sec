@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/" xmlns:dmndi="https://www.omg.org/spec/DMN/20191111/DMNDI/" xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" xmlns:camunda="http://camunda.org/schema/1.0/dmn" id="Definitions_0az0xrd" name="DRD" namespace="http://camunda.org/schema/1.0/dmn" exporter="Camunda Modeler" exporterVersion="4.9.0">
+<definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/" xmlns:dmndi="https://www.omg.org/spec/DMN/20191111/DMNDI/" xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" xmlns:camunda="http://camunda.org/schema/1.0/dmn" xmlns:biodi="http://bpmn.io/schema/dmn/biodi/2.0" id="Definitions_0az0xrd" name="DRD" namespace="http://camunda.org/schema/1.0/dmn" exporter="Camunda Modeler" exporterVersion="4.9.0">
   <decision id="Decision_0dhozh4" name="Decision 1">
     <decisionTable id="DecisionTable_0n375xc">
-      <input id="Input_1" label="Current group" camunda:inputVariable="group">
+      <input id="Input_1" label="Current group" biodi:width="248" camunda:inputVariable="group">
         <inputExpression id="InputExpression_1" typeRef="string">
           <text></text>
         </inputExpression>
       </input>
-      <input id="InputClause_0329m78" label="Messages" camunda:inputVariable="sagaState">
+      <input id="InputClause_0329m78" label="Messages" biodi:width="275" camunda:inputVariable="sagaState">
         <inputExpression id="LiteralExpression_1a7gf0f" typeRef="string">
           <text></text>
         </inputExpression>
       </input>
-      <output id="Output_1" label="Next Group" name="group" typeRef="string" />
+      <output id="Output_1" label="Next Group" name="group" typeRef="string" biodi:width="259" />
       <rule id="DecisionRule_1kdi19k">
         <inputEntry id="UnaryTests_1rztvy8">
           <text>"Startup"</text>
@@ -98,7 +98,7 @@
           <text>"Fail"</text>
         </inputEntry>
         <outputEntry id="LiteralExpression_1lpteya">
-          <text>"FakeCompensation"</text>
+          <text>"Unlock"</text>
         </outputEntry>
       </rule>
       <rule id="DecisionRule_0hiszeo">
@@ -109,7 +109,7 @@
           <text>"Abort"</text>
         </inputEntry>
         <outputEntry id="LiteralExpression_1brynpz">
-          <text>"FakeCompensation"</text>
+          <text>"Unlock"</text>
         </outputEntry>
       </rule>
       <rule id="DecisionRule_1bnrxi2">
@@ -131,7 +131,7 @@
           <text>"Fail"</text>
         </inputEntry>
         <outputEntry id="LiteralExpression_0d1ut05">
-          <text>"FakeCompensation"</text>
+          <text>"Cleanups"</text>
         </outputEntry>
       </rule>
       <rule id="DecisionRule_1i9z3u9">
@@ -142,7 +142,7 @@
           <text>"Abort"</text>
         </inputEntry>
         <outputEntry id="LiteralExpression_0uiproo">
-          <text>"FakeCompensation"</text>
+          <text>"Cleanups"</text>
         </outputEntry>
       </rule>
       <rule id="DecisionRule_0prgow8">
@@ -164,7 +164,7 @@
           <text>"Fail"</text>
         </inputEntry>
         <outputEntry id="LiteralExpression_0jt3lph">
-          <text>"FakeCompensation"</text>
+          <text>"Cleanups"</text>
         </outputEntry>
       </rule>
       <rule id="DecisionRule_0vrz3mo">
@@ -175,7 +175,7 @@
           <text>"Abort"</text>
         </inputEntry>
         <outputEntry id="LiteralExpression_0xx55bk">
-          <text>"FakeCompensation"</text>
+          <text>"Cleanups"</text>
         </outputEntry>
       </rule>
       <rule id="DecisionRule_003v113">
@@ -186,7 +186,7 @@
           <text>"Success"</text>
         </inputEntry>
         <outputEntry id="LiteralExpression_11fenvu">
-          <text>"CreateResponse"</text>
+          <text>"Backups"</text>
         </outputEntry>
       </rule>
       <rule id="DecisionRule_10vwfn8">
@@ -197,7 +197,7 @@
           <text>"Fail"</text>
         </inputEntry>
         <outputEntry id="LiteralExpression_06icgln">
-          <text>"FakeCompensation"</text>
+          <text>"Cleanups"</text>
         </outputEntry>
       </rule>
       <rule id="DecisionRule_15pkouw">
@@ -208,73 +208,337 @@
           <text>"Abort"</text>
         </inputEntry>
         <outputEntry id="LiteralExpression_1172t7a">
-          <text>"FakeCompensation"</text>
+          <text>"Cleanups"</text>
         </outputEntry>
       </rule>
-      <rule id="DecisionRule_09tdkct">
-        <inputEntry id="UnaryTests_01kpl5u">
-          <text>"CreateResponse"</text>
+      <rule id="DecisionRule_0zxt8s6">
+        <inputEntry id="UnaryTests_1tiyq7j">
+          <text>"Backups"</text>
         </inputEntry>
-        <inputEntry id="UnaryTests_1kn0r72">
+        <inputEntry id="UnaryTests_1bam4fh">
           <text>"Success"</text>
         </inputEntry>
-        <outputEntry id="LiteralExpression_1am719d">
+        <outputEntry id="LiteralExpression_0e4amq4">
+          <text>"Artifacts"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_0ec3md3">
+        <inputEntry id="UnaryTests_1x4ykrz">
+          <text>"Backups"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_19f45jp">
+          <text>"Fail"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_147qgm1">
+          <text>"Cleanups"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_1in8xtx">
+        <inputEntry id="UnaryTests_1u8je3h">
+          <text>"Backups"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1d03lzk">
+          <text>"Abort"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0jrt2mo">
+          <text>"Cleanups"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_11lmdth">
+        <inputEntry id="UnaryTests_0xh7iaj">
+          <text>"Artifacts"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0zfg3yw">
+          <text>"Success"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1mtuurt">
+          <text>"Ingestion"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_1q3m1do">
+        <inputEntry id="UnaryTests_14yqka3">
+          <text>"Artifacts"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0k6d4j4">
+          <text>"Fail"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1yi9e83">
+          <text>"Rollbacks"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_1mrlkza">
+        <inputEntry id="UnaryTests_139ffkg">
+          <text>"Artifacts"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0nk2isb">
+          <text>"Abort"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1nqz178">
+          <text>"Rollbacks"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_1nkybpo">
+        <inputEntry id="UnaryTests_1betx2j">
+          <text>"Ingestion"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1ftzyf5">
+          <text>"Success"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0yz0rl3">
+          <text>"SnapshotIndexationPostingestion"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_1y0n0c3">
+        <inputEntry id="UnaryTests_1im202y">
+          <text>"Ingestion"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1vh7s8t">
+          <text>"Fail"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_10asx6b">
+          <text>"Rollbacks"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_1vx6p8a">
+        <inputEntry id="UnaryTests_175neky">
+          <text>"Ingestion"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1x1dmzl">
+          <text>"Abort"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1rz4znu">
+          <text>"Rollbacks"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_1y4q6tr">
+        <inputEntry id="UnaryTests_1s4vsmk">
+          <text>"SnapshotIndexationPostingestion"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0uiexx9">
+          <text>"Success"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0xb3yg2">
+          <text>"Indexation"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_07uka7m">
+        <inputEntry id="UnaryTests_1vurboq">
+          <text>"SnapshotIndexationPostingestion"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_12bfma6">
+          <text>"Fail"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1i57wrh">
+          <text>"Rollbacks"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_1yw9f4i">
+        <inputEntry id="UnaryTests_164jwyp">
+          <text>"SnapshotIndexationPostingestion"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0vkdxu1">
+          <text>"Abort"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1cygf9u">
+          <text>"Rollbacks"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_1qgii48">
+        <inputEntry id="UnaryTests_1fhglqp">
+          <text>"Indexation"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_07zo4qi">
+          <text>"Success"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1jg93tm">
+          <text>"Cleanups"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_0p2zv1n">
+        <inputEntry id="UnaryTests_16sm204">
+          <text>"Indexation"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1qka16h">
+          <text>"Fail"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_13mm9qt">
+          <text>"Rollbacks"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_1n8c6s8">
+        <inputEntry id="UnaryTests_0rwudah">
+          <text>"Indexation"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1qfplkn">
+          <text>"Abort"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_14895lr">
+          <text>"Rollbacks"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_0lnoknv">
+        <inputEntry id="UnaryTests_18oxc8r">
+          <text>"Rollbacks"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1ot69bs">
+          <text>"Success"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_18nubhd">
+          <text>"Cleanups"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_1agxvtn">
+        <inputEntry id="UnaryTests_1yrdwf0">
+          <text>"Rollbacks"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1equ2jw">
+          <text>"Fail"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1nfnv9q">
+          <text>"Rollbacks"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_08ccijl">
+        <inputEntry id="UnaryTests_01v3665">
+          <text>"Rollbacks"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1iikmk9">
+          <text>"Abort"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_08e49lm">
+          <text>"Rollbacks"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_1mid736">
+        <inputEntry id="UnaryTests_11sd1vu">
+          <text>"Cleanups"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1dqjt59">
+          <text>"Success"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1gk693g">
+          <text>"Unlock"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_1h0z878">
+        <inputEntry id="UnaryTests_0koa4b9">
+          <text>"Cleanups"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0h2hnjq">
+          <text>"Fail"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1ane8ed">
+          <text>"Cleanups"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_15jxukw">
+        <inputEntry id="UnaryTests_0x88wcq">
+          <text>"Cleanups"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0r3e0cd">
+          <text>"Abort"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0kzhuco">
+          <text>"Cleanups"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_05x0s8w">
+        <inputEntry id="UnaryTests_1fdzj15">
+          <text>"Unlock"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0zuzeax">
+          <text>"Success"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0j11rz1">
+          <text>"CleanupLockingService"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_0u9029r">
+        <inputEntry id="UnaryTests_0f45523">
+          <text>"Unlock"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1l8b25a">
+          <text>"Fail"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0f36gz0">
+          <text>"Unlock"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_098wb71">
+        <inputEntry id="UnaryTests_112i66s">
+          <text>"Unlock"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1t77b53">
+          <text>"Abort"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0sarksm">
+          <text>"Unlock"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_03xhql8">
+        <inputEntry id="UnaryTests_07rd02u">
+          <text>"CleanupLockingDatabase"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1pibybf">
+          <text>"Success"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1h45ny6">
+          <text>"CreateResponse"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_0399ky5">
+        <inputEntry id="UnaryTests_1a6leca">
+          <text>"CleanupLockingDatabase"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_04cogws">
+          <text>"Fail"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0mx1sjl">
+          <text>"CleanupLockingService"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_017ln9i">
+        <inputEntry id="UnaryTests_1fpnrbf">
+          <text>"CleanupLockingDatabase"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1el8bsu">
+          <text>"Abort"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_15w00hr">
+          <text>"CleanupLockingService"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_0p4yk6s">
+        <inputEntry id="UnaryTests_0bbk6i0">
+          <text>"CreateResponse"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_11dh129">
+          <text>"Success"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1d28j2k">
           <text>"end"</text>
         </outputEntry>
       </rule>
-      <rule id="DecisionRule_1moyz8y">
-        <inputEntry id="UnaryTests_07ltpsr">
+      <rule id="DecisionRule_1l3m4ys">
+        <inputEntry id="UnaryTests_062jema">
           <text>"CreateResponse"</text>
         </inputEntry>
-        <inputEntry id="UnaryTests_07462s5">
+        <inputEntry id="UnaryTests_0f773t8">
           <text>"Fail"</text>
         </inputEntry>
-        <outputEntry id="LiteralExpression_1eicuqg">
+        <outputEntry id="LiteralExpression_03bver1">
           <text>"CreateResponse"</text>
         </outputEntry>
       </rule>
-      <rule id="DecisionRule_0xi9u7n">
-        <inputEntry id="UnaryTests_1prkwi0">
+      <rule id="DecisionRule_0f8h82f">
+        <inputEntry id="UnaryTests_1skzhxa">
           <text>"CreateResponse"</text>
         </inputEntry>
-        <inputEntry id="UnaryTests_0r8esgf">
+        <inputEntry id="UnaryTests_1r9ip7i">
           <text>"Abort"</text>
         </inputEntry>
-        <outputEntry id="LiteralExpression_1y00hjz">
+        <outputEntry id="LiteralExpression_1r1z2ub">
           <text>"CreateResponse"</text>
-        </outputEntry>
-      </rule>
-      <rule id="DecisionRule_1f8qdra">
-        <inputEntry id="UnaryTests_15qdpyn">
-          <text>"FakeCompensation"</text>
-        </inputEntry>
-        <inputEntry id="UnaryTests_1yoefw5">
-          <text>"Success"</text>
-        </inputEntry>
-        <outputEntry id="LiteralExpression_0yz41ph">
-          <text>"CreateResponse"</text>
-        </outputEntry>
-      </rule>
-      <rule id="DecisionRule_0alj3u4">
-        <inputEntry id="UnaryTests_0azie4d">
-          <text>"FakeCompensation"</text>
-        </inputEntry>
-        <inputEntry id="UnaryTests_0ykx0nd">
-          <text>"Abort"</text>
-        </inputEntry>
-        <outputEntry id="LiteralExpression_1kk7971">
-          <text>"FakeCompensation"</text>
-        </outputEntry>
-      </rule>
-      <rule id="DecisionRule_1q37eo3">
-        <inputEntry id="UnaryTests_16n50xr">
-          <text>"FakeCompensation"</text>
-        </inputEntry>
-        <inputEntry id="UnaryTests_0haukq8">
-          <text>"Fail"</text>
-        </inputEntry>
-        <outputEntry id="LiteralExpression_10wtytj">
-          <text>"FakeCompensation"</text>
         </outputEntry>
       </rule>
     </decisionTable>

@@ -27,7 +27,7 @@ public class StoreNewState  implements JavaDelegate {
 
 		//storing new state
 		@SuppressWarnings("unchecked")
-		List<Map<String, Object>> messages = (List<Map<String, Object>>) execution.getVariable("messages");
+		List<Map<String, Object>> messages = (List<Map<String, Object>>) execution.getVariable("queues");
 
 		//generate new activity id
 		String newActivityID = UUID.randomUUID().toString();
@@ -37,7 +37,7 @@ public class StoreNewState  implements JavaDelegate {
 		}
 
 		for(Map<String,Object> result:messages) {
-			String m=(String) result.get("messages");
+			String m=(String) result.get("queues");
 			if(!m.contentEquals("end")||(!sagaState.equals("Fail")&&(m.contentEquals("end")))){ 
 				SagalogAccess.writeRecord(postgresJdbc, postgresUsr, postgresPwd, trace_id, m, compensation, newActivityID, group, "Waiting");
 			}
@@ -48,15 +48,14 @@ public class StoreNewState  implements JavaDelegate {
 
 		//TODO:sending new messages
 		for(Map<String,Object> result:messages) {
-			String m=(String) result.get("messages");
+			String m=(String) result.get("queues");
 			if(!m.contentEquals("end")) {
 
 				try (Connection connection = factory.newConnection();
 						Channel channel = connection.createChannel()) {
-					channel.queueDeclare(m+"Begin", false, false, false, null);
-					String body=trace_id+" "+newActivityID+" "+compensation+" "+group+" start";
-					channel.basicPublish("", m+"Begin", null, body.getBytes(StandardCharsets.UTF_8));
-					LOGGER.info("["+trace_id+"] SENDING MESSAGE on "+m+"Begin via Rabitmq (message broker: "+rabbitmqOutput+"): "+body);
+					String body=trace_id+" "+newActivityID+" "+compensation+" "+group+" Start";
+					channel.basicPublish("", m+"RequestChannel", null, body.getBytes(StandardCharsets.UTF_8));
+					LOGGER.info("["+trace_id+"] SENDING MESSAGE on "+m+"RequestChannel via Rabitmq (message broker: "+rabbitmqOutput+"): "+body);
 				}
 			}
 		}
