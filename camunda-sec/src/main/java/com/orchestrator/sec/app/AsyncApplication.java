@@ -32,7 +32,7 @@ import com.rabbitmq.client.DeliverCallback;
 @SpringBootApplication
 public class AsyncApplication {
 	private final static Logger LOGGER = Logger.getLogger("SAGA EXECUTION CONTROLLER");
-	private static String XPATH = "//*/rule/outputEntry/text";
+	private static String XPATH = "//*/rule/outputEntry[1]/text";
 	private static String DMNTABLE= "src/main/resources/groups.dmn";
 
 	//detection of the names for the queues by means of xpath on the dmn that describes the groups
@@ -86,7 +86,7 @@ public class AsyncApplication {
 			
 			mapVars.put("trace",corp[0]);
 			mapVars.put("activity",corp[1]);
-			mapVars.put("compensation",corp[2]);
+			mapVars.put("retriable",corp[2]);
 			mapVars.put("group", corp[3]);
 			mapVars.put("result", corp[4]);
 			mapVars.put("postgresJdbc", Configs.POSTGRES_JDBC);

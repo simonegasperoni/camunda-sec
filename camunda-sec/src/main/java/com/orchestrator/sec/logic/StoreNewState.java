@@ -16,10 +16,9 @@ public class StoreNewState  implements JavaDelegate {
 	public void execute(DelegateExecution execution) throws Exception {
 		//set global variables
 		String trace_id = execution.getVariable("trace").toString();
-		boolean compensation = Boolean.parseBoolean(execution.getVariable("compensation").toString());
+		boolean retriable = Boolean.parseBoolean(execution.getVariable("retriable").toString());
 		String group = execution.getVariable("group").toString();
 		String sagaState = execution.getVariable("sagaState").toString();
-		
 		String postgresJdbc = execution.getVariable("postgresJdbc").toString();
 		String postgresUsr = execution.getVariable("postgresUsr").toString();
 		String postgresPwd = execution.getVariable("postgresPwd").toString();
@@ -28,7 +27,7 @@ public class StoreNewState  implements JavaDelegate {
 		//storing new state
 		@SuppressWarnings("unchecked")
 		List<Map<String, Object>> messages = (List<Map<String, Object>>) execution.getVariable("queues");
-
+		
 		//generate new activity id
 		String newActivityID = UUID.randomUUID().toString();
 
@@ -38,8 +37,10 @@ public class StoreNewState  implements JavaDelegate {
 
 		for(Map<String,Object> result:messages) {
 			String m=(String) result.get("queues");
+			
+			
 			if(!m.contentEquals("end")||(!sagaState.equals("Fail")&&(m.contentEquals("end")))){ 
-				SagalogAccess.writeRecord(postgresJdbc, postgresUsr, postgresPwd, trace_id, m, compensation, newActivityID, group, "Waiting");
+				SagalogAccess.writeRecord(postgresJdbc, postgresUsr, postgresPwd, trace_id, m, retriable, newActivityID, group, "Waiting");
 			}
 		}
 
@@ -49,11 +50,12 @@ public class StoreNewState  implements JavaDelegate {
 		//TODO:sending new messages
 		for(Map<String,Object> result:messages) {
 			String m=(String) result.get("queues");
+			Boolean r=(Boolean) result.get("retriable");
+			
 			if(!m.contentEquals("end")) {
-
 				try (Connection connection = factory.newConnection();
 						Channel channel = connection.createChannel()) {
-					String body=trace_id+" "+newActivityID+" "+compensation+" "+group+" Start";
+					String body=trace_id+" "+newActivityID+" "+r+" "+group+" Start";
 					channel.basicPublish("", m+"RequestChannel", null, body.getBytes(StandardCharsets.UTF_8));
 					LOGGER.info("["+trace_id+"] SENDING MESSAGE on "+m+"RequestChannel via Rabitmq (message broker: "+rabbitmqOutput+"): "+body);
 				}

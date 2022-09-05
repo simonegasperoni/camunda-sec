@@ -63,14 +63,14 @@ public class SagalogAccess {
 
 	}
 
-	public static void writeRecord(String param1, String param2, String param3, String trace_id, String state, boolean compensation, String activity_id, String group, String result) throws SQLException, ClassNotFoundException {
+	public static void writeRecord(String param1, String param2, String param3, String trace_id, String state, boolean retirable, String activity_id, String group, String result) throws SQLException, ClassNotFoundException {
 		Class.forName("org.postgresql.Driver");
 		Connection c = DriverManager.getConnection(param1, param2,  param3);
-		PreparedStatement st = c.prepareStatement("INSERT INTO SAGALOG (trace_id, state, time_stamp, compensation, activity_id, group_id, result) VALUES (?, ?, ?, ?, ?, ?, ?)");
+		PreparedStatement st = c.prepareStatement("INSERT INTO SAGALOG (trace_id, state, time_stamp, retriable, activity_id, group_id, result) VALUES (?, ?, ?, ?, ?, ?, ?)");
 		st.setString(1, trace_id);
 		st.setString(2, state);
 		st.setTimestamp(3, new java.sql.Timestamp(Calendar.getInstance().getTime().getTime()));
-		st.setBoolean(4, compensation);
+		st.setBoolean(4, retirable);
 		st.setString(5, activity_id);
 		st.setString(6, group);
 		st.setString(7, result);

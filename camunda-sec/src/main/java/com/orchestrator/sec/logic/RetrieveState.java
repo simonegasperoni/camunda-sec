@@ -29,12 +29,11 @@ public class RetrieveState implements JavaDelegate {
 			execution.setVariable("complete", true);
 			if(SagalogAccess.transactionAborted(postgresJdbc, postgresUsr, postgresPwd, trace_id)) {
 				execution.setVariable("sagaState", "Abort");
-				execution.setVariable("compensation", true);
+				execution.setVariable("retriable", true);
 			}
 			else {
 				if(!lfail.isEmpty()) {
 					execution.setVariable("sagaState", "Fail");
-					execution.setVariable("compensation", true);
 				}
 				else {
 					execution.setVariable("sagaState", "Success");
