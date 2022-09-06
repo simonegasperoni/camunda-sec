@@ -352,7 +352,7 @@
       </rule>
       <rule id="DecisionRule_05rrzet">
         <inputEntry id="UnaryTests_1ckq8gz">
-          <text>"CleanupValidationService"</text>
+          <text>"CleanupValidationDatabase"</text>
         </inputEntry>
         <outputEntry id="LiteralExpression_0hkzm63">
           <text>"ValidationService/Saga/SEC-Ingestion/Cleanup"</text>
@@ -374,7 +374,7 @@
       </rule>
       <rule id="DecisionRule_1krvg4p">
         <inputEntry id="UnaryTests_126kmjd">
-          <text>"CleanupLockingService"</text>
+          <text>"CleanupLockingDatabase"</text>
         </inputEntry>
         <outputEntry id="LiteralExpression_1dyvdek">
           <text>"LockingService/Saga/SEC-Ingestion/Cleanup"</text>

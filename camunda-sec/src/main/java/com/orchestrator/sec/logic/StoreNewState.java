@@ -16,7 +16,6 @@ public class StoreNewState  implements JavaDelegate {
 	public void execute(DelegateExecution execution) throws Exception {
 		//set global variables
 		String trace_id = execution.getVariable("trace").toString();
-		boolean retriable = Boolean.parseBoolean(execution.getVariable("retriable").toString());
 		String group = execution.getVariable("group").toString();
 		String sagaState = execution.getVariable("sagaState").toString();
 		String postgresJdbc = execution.getVariable("postgresJdbc").toString();
@@ -37,10 +36,10 @@ public class StoreNewState  implements JavaDelegate {
 
 		for(Map<String,Object> result:messages) {
 			String m=(String) result.get("queues");
-			
+			Boolean r=(Boolean) result.get("retriable");
 			
 			if(!m.contentEquals("end")||(!sagaState.equals("Fail")&&(m.contentEquals("end")))){ 
-				SagalogAccess.writeRecord(postgresJdbc, postgresUsr, postgresPwd, trace_id, m, retriable, newActivityID, group, "Waiting");
+				SagalogAccess.writeRecord(postgresJdbc, postgresUsr, postgresPwd, trace_id, m, r, newActivityID, group, "Waiting");
 			}
 		}
 

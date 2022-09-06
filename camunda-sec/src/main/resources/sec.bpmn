@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bioc="http://bpmn.io/schema/bpmn/biocolor/1.0" xmlns:color="http://www.omg.org/spec/BPMN/non-normative/color/1.0" xmlns:modeler="http://camunda.org/schema/modeler/1.0" id="Definitions_10ppsrf" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="4.9.0" modeler:executionPlatform="Camunda Platform" modeler:executionPlatformVersion="7.15.0">
   <bpmn:message id="Message_1jq2368" name="intermsg" />
-  <bpmn:error id="Error_0cbtb4s" name="Error_2tfs10e" errorCode="ConsistencyErrorDetected" camunda:errorMessage="Message out of sync" />
+  <bpmn:error id="Error_0cbtb4s" name="Error_2tfs10e" errorCode="ConsistencyErrorDetected" camunda:errorMessage="Sagalog not consistent" />
   <bpmn:collaboration id="Collaboration_0mf4h4w">
     <bpmn:participant id="Participant_0v1ewgv" name="Saga Execution Controller" processRef="Process_0eahcf1" />
   </bpmn:collaboration>
@@ -29,6 +29,7 @@
       <bpmn:incoming>Flow_0f8cz3m</bpmn:incoming>
       <bpmn:incoming>Flow_170zuhm</bpmn:incoming>
       <bpmn:incoming>Flow_0ivs5dn</bpmn:incoming>
+      <bpmn:incoming>Flow_0v1loh7</bpmn:incoming>
     </bpmn:endEvent>
     <bpmn:exclusiveGateway id="Gateway_1gugk8w" default="Flow_1mrief4">
       <bpmn:incoming>Flow_0tl9sao</bpmn:incoming>
@@ -69,6 +70,11 @@
       <bpmn:incoming>Flow_05jnwey</bpmn:incoming>
       <bpmn:outgoing>Flow_0ivs5dn</bpmn:outgoing>
     </bpmn:serviceTask>
+    <bpmn:boundaryEvent id="Event_1we8zaq" attachedToRef="Activity_0yvahii">
+      <bpmn:outgoing>Flow_0v1loh7</bpmn:outgoing>
+      <bpmn:errorEventDefinition id="ErrorEventDefinition_12b68g4" errorRef="Error_0cbtb4s" />
+    </bpmn:boundaryEvent>
+    <bpmn:sequenceFlow id="Flow_0v1loh7" name="Out of sync message" sourceRef="Event_1we8zaq" targetRef="Event_0kyykah" />
     <bpmn:textAnnotation id="TextAnnotation_174acbo">
       <bpmn:text>It stores the new state in the Saga Log and sends the new messages</bpmn:text>
     </bpmn:textAnnotation>
@@ -183,6 +189,15 @@
         <di:waypoint x="760" y="450" />
         <di:waypoint x="874" y="450" />
       </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0v1loh7_di" bpmnElement="Flow_0v1loh7">
+        <di:waypoint x="380" y="508" />
+        <di:waypoint x="380" y="560" />
+        <di:waypoint x="1339" y="560" />
+        <di:waypoint x="1339" y="468" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="411" y="566" width="57" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
       <bpmndi:BPMNShape id="Activity_0iz0ch7_di" bpmnElement="Activity_1enjt5g" bioc:stroke="#1e88e5" bioc:fill="#bbdefb" color:background-color="#bbdefb" color:border-color="#1e88e5">
         <dc:Bounds x="1139" y="253" width="100" height="80" />
       </bpmndi:BPMNShape>
@@ -240,6 +255,9 @@
         <di:waypoint x="697" y="410" />
         <di:waypoint x="678" y="354" />
       </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="Event_13eufm1_di" bpmnElement="Event_1we8zaq">
+        <dc:Bounds x="362" y="472" width="36" height="36" />
+      </bpmndi:BPMNShape>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
 </bpmn:definitions>

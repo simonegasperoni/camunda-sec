@@ -6,5 +6,5 @@ CREATE TABLE public.sagalog (
  activity_id text NOT NULL,
  group_id text NOT NULL,
  result text NOT NULL,
- CONSTRAINT sagalog_pk PRIMARY KEY (trace_id, activity_id, state, result)
+ CONSTRAINT sagalog_pk PRIMARY KEY (trace_id, activity_id, state, result, time_stamp)
 );
