@@ -15,7 +15,7 @@ public class Sender {
 //	SPARQLService/Saga/SEC-Ingestion/RollbackResponseChannel        a09ab758-001e-4bec-8ff7-f69090d11234 dbc7737a-45ae-4cd4-9b41-02f030392ff7 true Rollbacks Start
 //	ArtifactService/Saga/SEC-Ingestion/RollbackResponseChannel      a09ab758-001e-4bec-8ff7-f69090d11234 dbc7737a-45ae-4cd4-9b41-02f030392ff7 true Rollbacks Start
 
-    private final static String QUEUE_NAME = "ArtifactService/Saga/SEC-Ingestion/RollbackResponseChannel";
+    private final static String QUEUE_NAME = "ValidationService/Saga/SEC-Ingestion/StructuralValidationResponseChannel";
 
     public static void main(String[] argv) throws Exception {
         ConnectionFactory factory = new ConnectionFactory();
@@ -24,7 +24,7 @@ public class Sender {
              Channel channel = connection.createChannel()) {
             channel.queueDeclare(QUEUE_NAME, false, false, false, null);
             //<msg, trace_id, activity_id, params>
-            String message = "a09ab758-001e-4bec-8ff7-f69090d11234 dbc7737a-45ae-4cd4-9b41-02f030392ff7 True Rollbacks Success";
+            String message = "a09ab758-001e-4bec-8ff7-f69090d11234 0f8d6a75-badf-449d-a0cb-b15da5aacae2 False StructuralValidation Success";
             channel.basicPublish("", QUEUE_NAME, null, message.getBytes(StandardCharsets.UTF_8));
             System.out.println(" [x] Sent '" + message + "'");
         }

@@ -394,6 +394,17 @@
           <text>true</text>
         </outputEntry>
       </rule>
+      <rule id="DecisionRule_0lkkqoo">
+        <inputEntry id="UnaryTests_1w0yc7f">
+          <text>"Abort"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0jqvxnu">
+          <text>"SEC-Ingestion/Task/Abort"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1343ofh">
+          <text>false</text>
+        </outputEntry>
+      </rule>
     </decisionTable>
   </decision>
   <dmndi:DMNDI>

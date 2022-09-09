@@ -103,8 +103,8 @@ public class AsyncApplication {
 		};
 
 		//Queues declaration
-		channel.queueDeclare("Abort", false, false, false, null);
-		channel.basicConsume("Abort", true, deliverCallback, consumerTag -> { });
+		channel.queueDeclare("SEC-Ingestion/Task/AbortResponseChannel", false, false, false, null);
+		channel.basicConsume("SEC-Ingestion/Task/AbortResponseChannel", true, deliverCallback, consumerTag -> { });
 		LOGGER.info("new queue: Abort");
 		List<String> queues=detectListOfQueuesByDmn();
 		for(String queue:queues) {
